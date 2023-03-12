@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "DadJokes Page";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="text-center" style="margin:50px;">
+    <div>
+        <p class="display-4 jokesetup" id="jokesetup" style="font-size: xx-large;"></p>
+        <p class="jokepunchline" id="jokepunchline" style="font-size: xx-large;"></p>
+        <button id="display-button" type="button" class="btn btn-primary">Next Joke</button>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        function displayJoke() {            
+            debugger;
+            $.ajax({
+                url: '/Home/GetJokes',
+                type: 'GET',
+                data: { count: 1 },
+                success: function (response) {
+                    debugger;
+                    var JSONObject = JSON.parse(response);
+                    if (JSONObject.success) {
+                        document.getElementById('jokesetup').innerHTML = JSONObject.body[0].setup;
+                        document.getElementById('jokepunchline').innerHTML = JSONObject.body[0].punchline;
+                    }
+                },
+                error: function (error) {
+                }
+            });
+        }
+        displayJoke();
+        document.getElementById('display-button').addEventListener('click', displayJoke);
+    });    
+</script>
